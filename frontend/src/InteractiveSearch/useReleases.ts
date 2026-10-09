@@ -322,10 +322,18 @@ const SORT_PREDICATES = {
 
   languages: (item: Release, _direction: SortDirection) => {
     if (item.languages.length > 1) {
-      return 10000;
+      return `${translate('MultiLanguages')} ${item.languages
+        .map((language) => language.name)
+        .join(', ')}`;
     }
 
-    return item.languages[0]?.id ?? 0;
+    const language = item.languages[0];
+
+    if (!language || language.id === 0) {
+      return '\uffff';
+    }
+
+    return language.name;
   },
 
   peers: (item: Release, _direction: SortDirection) => {
